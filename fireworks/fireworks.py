@@ -2,7 +2,6 @@ WIDTH = 30
 HEIGHT = 20
 TITLE = 'Fireworks!'
 
-# make the background black
 BACKGROUND = (0,0,0)
 
 def explode(s):

@@ -11,27 +11,27 @@ WIDTH = 30
 HEIGHT = 20
 TITLE = 'Fireworks!'
 ```
-Since fireworks normally launch in the evening, we'll pain our background black.
+Since fireworks normally launch in the evening, we'll paint our background black.
 
 ```
 # make the background black
 BACKGROUND = (0,0,0)
 ```
 
-This defines the background using a RGB (RED, GREEN, BLUE) tuple. We also have some constants defined for common color, so setting the line this way would have the same effect:
+This defines the background using a RGB (RED, GREEN, BLUE) tuple. We also have some constants defined for common colors, so setting the line this way would have the same effect:
 
 ```
 # make the background black
 BACKGROUND = BLACK
 ```
 
-For your display, you may wish to use a background image instead. That's possible provided that the image is stored in the `backgrounds/` directory. Then the code would look something like this (*NOTE that we don't use file extensions for images*).
+For your game, you may wish to use a background image instead. That's possible provided that the image is stored in the `backgrounds/` directory. Then the code would look something like this (*NOTE that we don't use file extensions for images, backgrounds, and sounds*).
 
 ```python
 # use a background image
 BACKGROUND = 'castle_at_night'
 ```
-The core of the game consists of two callbacks. First is a one to launch the firework and then the second to create the explosion effect. Lets cover launching first.
+The core of the game consists of two callbacks. First is a one to launch the firework and the second to create the explosion effect. Let's cover launching first:
 
 ```python
 def launch():
@@ -66,7 +66,7 @@ You'll notice that fireworks launch and sound effects are playing, but there is 
 ```python
         s.speed(15).move_to(p, callback=s.destroy)
 ```
-Once the yellow circle sprite moves to point `p` the callback `s.destroy` is invoke. As the name implies, that simply destroys the sprite. 
+Once the yellow circle sprite moves to point `p` the callback `s.destroy` is invoked. As the name implies, that simply destroys the sprite. 
 
 Now let's handle the explosion. We'll define a function to handle that effect:
 
@@ -85,9 +85,9 @@ We currently have five fireworks images in our images directory:
 my_machine$ ls images/
 fireworks-1.png fireworks-2.png fireworks-3.png fireworks-4.png fireworks-5.png
 ```
-The `randint(1,5)` line simply picks a number between 1 and 5 at random. The image will initially start out at roughly sized at one half a grid cell. The image will slowly pulse with a four second interval. Note that the image will `destruct` between 0.1 and 4 seconds, so this basically means the firework will expand and never contract.
+The `randint(1,5)` line simply picks a number between 1 and 5 at random. The image will initially render at roughly sized at one half a grid cell. The image will slowly pulse with a four second interval. Note that the image will `destruct` between 0.1 and 4 seconds, so this basically means the firework will expand and never contract.
 
-With the explosion defined, we'll now want to go back and reset the yellow sprite callback to use `explode`:
+With the explosion defined, we'll now want to go back and reset the yellow sprite callback to use our new `explode` function:
 ```python
         s.speed(15).move_to(p, callback=partial(explode, s))
 ```
@@ -98,7 +98,6 @@ WIDTH = 30
 HEIGHT = 20
 TITLE = 'Fireworks!'
 
-# make the background black
 BACKGROUND = (0,0,0)
 
 def explode(s):
