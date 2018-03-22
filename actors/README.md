@@ -1,24 +1,24 @@
 Actor Framework
 ===================
-Predigame Actors are Sprites that perform certain **actions** - mostly in the form of animations that maze the game more realistic. Actors can perform any number of actions (walk, run, jump, attack) which are usually left up to the artist's creation of the sprite.
-
-Prior to reading more about Predicate Actors, be sure to check out our [Sprites](https://github.com/predicateacademy/predigame/blob/master/examples/sprites/README.md) and [Mazes](https://github.com/predicateacademy/predigame/blob/master/examples/maze/README.md) tutorials!
+Predigame Actors are Sprites that perform certain **actions** - mostly in the form of animations that make the game more realistic. Actors can perform any number of actions (walk, run, jump, attack) which are usually left up to the artist's creation of the sprite.
 
 Here are a few example Actors.
 
-![alt text](http://predicate.us/predigame/images/zombie_animated.gif "Predigame Grid Coordinates")
-![alt text](http://predicate.us/predigame/images/soldier_animated.gif "Predigame Grid Coordinates")
-![alt text](http://predicate.us/predigame/images/other_animated.gif "Predigame Grid Coordinates")
+![alt text](http://predicate.us/predigame/images/zombie_animated.gif "Predigame Zombies")
+![alt text](http://predicate.us/predigame/images/soldier_animated.gif "Predigame Soldiers")
+![alt text](http://predicate.us/predigame/images/other_animated.gif "Predigame Actors")
 
-NOTICE: Licensed Files
-----------
-All of the artwork used here has been purchased from [envanto market](https://graphicriver.net/category/game-assets/sprites) and is not included in the Predigame standard distribution. Feel free to purchase your own license and we can show you the steps to include the actor artwork into your Predigame.
+
+## Asset Licenses
+
+All static artwork has been obtained from  [OpenGameArt](https://opengameart.org/)  or from Google with the "Labeled for reuse" filtered defined. Animated sprites are licensed to Predicate Academy (Predigame's developer) for use limited to non-commercial Predigame development.
+
 
 How Actors Work
 ----------
-The artwork we use for actors are *four directional sprites* in that each of the actions are repeated in each direction of movement (up, down, left, right). Actor animations may seem a big complicated under the hood, but it is nothing more than just a sequence of still images that are refreshed at a fast enough rate to give the **illusion of animation**.
+The artwork we use for actors are *four directional sprites* in that each of the actions are repeated in each direction of movement (up, down, left, right). Actor animations may seem a bit complicated under the hood, but it is nothing more than just a sequence of still images that are refreshed at a fast enough rate to give the **illusion of animation**.
 
-In Predigame we store actors in the `actors` directory has highlighted in the picture below.
+In Predigame we store actors as **.pga** files in the `actors` directory. Every **.pga** file of actions and directions as highlighted in the picture below:
 ![alt text](http://predicate.us/predigame/images/actors.png "Predigame Actors ")
 
 Each of the highlighted png files capture a single frame.
@@ -43,7 +43,7 @@ This program doesn't do much just yet. Just an empty window titled "Actor Demo".
 
 Creating Actors
 -------------
-Every actor is stored in the `actors` directory. It's the same concept as `images` but rather than having a *single file* for each actor, the file structure is a little more complicated. Every actor is a directory of actions and each action directory is contains an a sequence of still images.
+Every actor is stored in the `actors` directory. It's the same concept as `images`. Every actor file contains a directory of actions and each action directory is contains an a sequence of still images.
 
 Let's take a quick glance at this figure again.
 ![alt text](http://predicate.us/predigame/images/actors.png "Predigame Actors ")
@@ -55,13 +55,13 @@ WIDTH = 30
 HEIGHT = 20
 TITLE = 'Actor Demo'
 
-# create a Zombie actor
-player = actor('Zombie-1', center=(14, 9), size=4)
+# create a Soldier actor
+player = actor('Soldier-2', center=(14, 9), size=4)
 ```
 Save your changes and run the game. Notice that we see an actor but our actor doesn't do much. Let's see what happens when have our actor follow the keyboard.
 ```python
-# create a Zombie actor
-player = actor('Zombie-1', center=(14, 9), size=4)
+# create a Soldier actor
+player = actor('Soldier-2', center=(14, 9), size=4)
 
 # follow the arrow keys
 player.keys()
@@ -73,8 +73,8 @@ Actor Actions
 Let's take a deeper dive into some of the actions that an actor can do. We're going to modify the previous code a bit so that we don't tie the actor to the keyboard for movement.
 
 ```python
-# create a Zombie actor
-player = actor('Zombie-1', center=(14, 9), size=4)
+# create a Soldier-2 actor
+player = actor('Soldier-2', center=(14, 9), size=4)
 
 player.direction = FRONT
 player.act(WALK, loop=FOREVER)
@@ -88,19 +88,9 @@ player.direction = RIGHT
 ```
 Now you wouldn't want to have all of these directions listed like we did above. That was for illustration.
 
-Let's take a look at actions. The `Zombie-1` actor also supports `ATTACK`, `DIE`, and `IDLE` actions. Paired with a call to the `act` function is the amount of times to loop through the animation images. The default behavior is to loop through the images forever.
+Let's take a look at actions. The `Soldier-2` actor also supports `DIE`, `IDLE`,  `IDLE_AIM`, `SHOOT`, and `THROW` actions. Paired with a call to the `act` function is the amount of times to loop through the animation images. The default behavior is to loop through the images forever.
 
-We assembled a quick demonstration of our different actors and their possible actions. These are provided in the [examples directory](https://github.com/predicateacademy/predigame/tree/master/examples/actors). If you have this code stored locally, try running each example.
-
-    my_machine$ pigm actor-maze.py
-    my_machine$ pigm actor-soldier.py
-    my_machine$ pigm actor-other.py
-
-If you look at the code for each of these demonstrations, you'll see a bunch of key event registration invocations. Each are quick ways to demonstrate how the actions are supposed to function.
-
-
-Sample Game - Making Bacon
--------------
+# Making Bacon
 
 Let's create a simple maze game that demonstrates some other cool things we can do with actors. Create a new file named `bacon.py` and start with our typical first three lines of code:
 
