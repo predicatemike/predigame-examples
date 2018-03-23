@@ -1,191 +1,206 @@
-How do I?
------
-It's possible to take a game in a number of different directions. This guide walks through some common **use cases** and the underlying code that would be required for implementation.
+Levels
+===========
+Predigame utilizes [Python Classes](https://docs.python.org/3/tutorial/classes.html) to implement a game with levels. If you're new to the *class abstraction* be sure to click on the previous link and learn about a pretty cool way of organizing your code.  
 
-# Computer Opponents
+A Predigame level consists of three key ingredients:
 
-## Add a Opponent
+1. a `setup()` member containing any code that should run prior to the start of a given level.
+2. a `completed()` member that assesses if a given objective has been established.
+3. a `next()` member that instructs Predigame the next level to load.
 
-**Objective:** Add a computer controlled opponent that want to find a player sprite. Have the opponent start in the upper right corner.
+With that in mind, let's take a look at two mini-game examples.
+
+# Example 1: Statically Defined Levels
+
+This example is pretty basic. We introduce game with two statically defined levels - level 1 draws one circle, level 2 draws two circles. Yup. Pretty basic, but it illustrates the mechanics of what it takes to create a level.
 
 ```python
-def lose(z, p):
-	p.health = 0
+# This is a simple game with two levels
+WIDTH = 30
+HEIGHT = 20
+TITLE = 'Simple Two Level Example'
 
-def create_zombie():
-	name = choice(['Zombie-1', 'Zombie-2', 'Zombie-3'])
-	z = actor(name, (WIDTH-1, 1), tag = 'zombie')
-	z.wander(partial(track, z, p, pbad=0.1), time=0.5)
-	z.collides(p, lose)
-create_zombie()
+# hold a reference to the current level
+current_level = None
+
+# support functions used in every level
+def pop(s):
+    # destroy the circle
+    s.destroy()
+    # tally the hit
+    current_level.hit()
+
+class PopLevel1(Level):
+    def __init__(self, duration):
+        self.hits = 0
+        self.duration = duration
+
+    def hit(self):
+        # update the number of hits
+        self.hits += 1
+
+        # refresh the score
+        score(self.hits)
+
+    def get_duration(self):
+        return score(pos=LOWER_RIGHT)
+
+    def setup(self):
+        """ setup the level """
+
+        # Hold a reference to this level
+        global current_level
+        current_level = self
+
+        # create one target at a random location
+        shape(CIRCLE).clicked(pop)
+
+        # SCORE BOARD
+        score(0, color=BLACK, method=VALUE, prefix='Hits: ')
+        score(pos=LOWER_RIGHT, color=BLACK, value=self.duration, method=TIMER,
+              step=1, goal=1000, prefix='Duration: ')
+
+        # KEYBOARD EVENTS
+        keydown('r', reset)
+
+    def completed(self):
+        """ level is complete when all targets have been destroyed """
+        # completed if one circle clicked
+        if self.hits == 1:
+            return True
+        else:
+            return False
+
+    def next(self):
+        """ load the next level """
+        # preserve the time
+        return PopLevel2(duration=score(pos=LOWER_RIGHT))
+
+class PopLevel2(Level):
+    def __init__(self, duration):
+        self.hits = 0
+        self.duration = duration
+
+    def hit(self):
+        # update the number of hits
+        self.hits += 1
+
+        # refresh the score
+        score(self.hits)
+
+    def get_duration(self):
+        return score(pos=LOWER_RIGHT)
+
+    def setup(self):
+        """ setup the level """
+
+        # Hold a reference to this level
+        global current_level
+        current_level = self
+
+        # create two circles at random locations
+        shape(CIRCLE).clicked(pop)
+        shape(CIRCLE).clicked(pop)
+
+        # SCORE BOARD
+        score(0, color=BLACK, method=VALUE, prefix='Hits: ')
+        score(pos=LOWER_RIGHT, color=BLACK, value=self.duration, method=TIMER,
+              step=1, goal=1000, prefix='Duration: ')
+
+        # KEYBOARD EVENTS
+        keydown('r', reset)
+
+    def completed(self):
+        """ level is complete when all targets have been destroyed """
+        # completed if two circles clicked
+        if self.hits == 2:
+            return True
+        else:
+            return False
+
+    def next(self):
+        """ end the game.. there is no next level """
+        text("YOU SOLVED ALL LEVELS!")
+        gameover()
+
+# start the game at level 1
+level(PopLevel1(1))
 ```
+# Example 2: Dynamic Levels
 
-## Schedule More Opponents
-**Objective:** Add another computer opponent every 30 seconds.
-
-```python
-callback(create_zombie, 30, repeat=True)
-```
-
-## Single Target Opponent
-
-## Make Opponents Move Away from Player(s)
-
-
-# Levels
-
-# Mazes
-
-## Creating Mazes
-Create a maze based on stone images (this assumes you have a `stone.png` file saved in your images directory.
-```python
-maze(callback=partial(image, 'stone'))
-```
-Create a maze based on black rectangles:
-```python
-maze(callback=partial(shape, RECT, BLACK))
-```
-
-
-
-## Add Walls
-This code will register callbacks for the `w`, `a`,`s`, and `d` keys. The put function a stone wall at the grid location next to the player.
-```python
-def put(player, direction):
-	""" put a block at the player's next location  """
-	pos = player.next(direction)
-	image('stone', pos, tag = 'wall')
-
-keydown('w', callback=partial(put, player, BACK))
-keydown('a', callback=partial(put, player, LEFT))
-keydown('s', callback=partial(put, player, FRONT))
-keydown('d', callback=partial(put, player, RIGHT))
-```
-
-## Destroy Walls
-Allow a player to shoot and destroy any object, including a wall.
+This example builds on the previous but now increases the number of circles that are drawn with each level. We've also introduced a countdown timer. The objective of this game is to see how many levels the player can reach by clicking all circles within `10` seconds. You'll notice that there is much less code in this examples. Dynamic levels are fun!
 
 ```python
-def shoot():
-	player.act(SHOOT, loop=1)
-
-	target = player.next_object()
-	if target and isinstance(target, Actor):
-		target.kill()
-	elif target:
-		target.fade(0.5)
-
-keydown('space', shoot)
-```
-# Weapons
-
-## Shoot (real) Bullets
-```python
-def hit(bullet, obj):
-	if obj != player:
-		bullet.destroy()
-		if isinstance(obj, Actor):
-			obj.kill()
-def shoot():
-	player.act(SHOOT, loop=1)
-	pos = player.facing()
-	bpos = player.pos
-	bullet = image('bullet', pos=(bpos[0]+0.5, bpos[1]+0.5), size=0.3)
-	bullet.speed(10).move_to((pos[0]+0.5,pos[1]+0.5))
-	bullet.collides(sprites(), hit)
-keydown('space', shoot)
-```
-## Shoot Through Walls
-```python
-def hit(bullet, obj):
-	if obj != player:
-		if isinstance(obj, Actor):
-			obj.kill()
-		elif isinstance(obj, Sprite):
-			obj.fade(0.25)
-
-def shoot():
-	player.act(SHOOT, loop=1)
-	pos = player.facing()
-	bpos = player.pos
-	bullet = image('bullet', pos=(bpos[0]+0.5, bpos[1]+0.5), size=0.3)
-	bullet.speed(10).move_to((pos[0]+0.5,pos[1]+0.5))
-	bullet.collides(sprites(), hit)
-keydown('space', shoot)
-```
-## Machine Gun Fire
-Keep on firing until you stop. Load and then fire some more.
-```python
-def load():
-	global stop
-	stop = False
-
-def stopit():
-	global stop
-	stop = True
-
-def hit(bullet, obj):
-	if obj != player:
-		if isinstance(obj, Actor):
-			obj.kill()
-		elif isinstance(obj, Sprite):
-			obj.fade(0.25)
-
-def machine_gun():
-	player.act(SHOOT, loop=1)
-	pos = player.facing()
-	bpos = player.pos
-	bullet = image('bullet', pos=(bpos[0]+0.5, bpos[1]+0.5), size=0.3)
-	bullet.speed(10).move_to((pos[0]+0.5,pos[1]+0.5))
-	bullet.collides(sprites(), hit)
-	if not stop:
-		callback(machine_gun, 0.25)
-```
-## Throw a Punch
-
-```python
-player = actor('Soldier-2', pos=(1, 1), tag = 'player', abortable=True)
-player.speed(2).keys()
-
-def punch():
-    player.act(THROW, loop=1)
-    target = at(player.next(player.direction))
-    if isinstance(target, Actor):
-        target.kill()
-    elif isinstance(target, Sprite):
-        target.fade(0.5)
-
-keydown('p', punch)
-```
-
-## Throw a Bomb
-
-## Limiting Inventory
-
-# Scoring
-
-##  Add a countdown timer
-
-**Objective:** Add a countdown timer that will stop a game when the timer reaches zero.
-
-This is an example of a timer that will start at 30 seconds, count down every second (`step=-1`), stop at zero (`goal=0`), and call the `timer()` callback function when complete. Any scoring element may have a text prefix if desired, but that is optional.
-
-```python
-# simple countdown timer example
+# Create a basic game that demonstrates how to create levels
+# In each level, the player has to pop all the circles in 10 seconds
+# A new circle will be added for each level
 
 WIDTH = 30
 HEIGHT = 20
-TITLE = 'Countdown Timer Example'
+TITLE = 'Simple Levels Example'
+
+current_level = None
 
 def timer():
-        text('GAME OVER')
-        gameover()
+    text("You survived " + str(current_level.get_duration()) + " seconds.")
+    gameover()
+ 
+def pop(s):
+    s.destroy()
+    current_level.hit()
 
-score(30, pos=UPPER_LEFT, method=TIMER, step=-1, goal=0, callback=timer, prefix='Time Left:')
+class PopLevel(Level):
+    def __init__(self, level=1, duration=0):
+        self.level = level
+        self.hits = 0
+        self.time_remaining = 10
+        self.duration = duration
+
+    def hit(self):
+        # update the number of hits
+        self.hits += 1
+
+        # refresh the score
+        score(self.hits)
+
+    def get_duration(self):
+        return score(pos=LOWER_RIGHT)
+
+    def setup(self):
+        """ setup the level """
+
+        # Hold a reference to this level
+        global current_level
+        current_level = self
+
+        # TARGETS
+        for x in range(self.level):
+            shape(CIRCLE).clicked(pop)
+
+        # SCORE BOARD
+        score(0, color=BLACK, method=VALUE, prefix='Hits: ')
+        score(pos=LOWER_LEFT, color=BLACK, value=self.time_remaining, method=TIMER,
+              step=-1, goal=0, callback=timer, prefix='Time Remaining: ')
+        score(pos=LOWER_RIGHT, color=BLACK, value=self.duration, method=TIMER,
+              step=1, goal=1000, prefix='Duration: ')
+        score(self.level, pos=UPPER_RIGHT, color=BLACK, method=VALUE, prefix='Level: ')
+
+        # KEYBOARD EVENTS
+        keydown('r', reset)
+
+    def completed(self):
+        """ level is complete when all targets have been destroyed """
+        if self.hits == self.level:
+            return True
+        else:
+            return False
+
+    def next(self):
+        """ load the next level """
+        return PopLevel(level=self.level+1, duration=score(pos=LOWER_RIGHT))
+
+level(PopLevel(1))
+
 ```
 
-## Adjust a countdown timer
 
-**Objective:** Reward the player with additional time for a particular accomplishment.
-
- 
