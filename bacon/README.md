@@ -1,5 +1,3 @@
-Welcome file
-Welcome file
 Making Bacon
 ============
 
