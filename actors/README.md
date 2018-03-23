@@ -5,7 +5,9 @@ Predigame Actors are Sprites that perform certain **actions** - mostly in the fo
 Here are a few example Actors.
 
 ![alt text](http://predicate.us/predigame/images/zombie_animated.gif "Predigame Zombies")
+
 ![alt text](http://predicate.us/predigame/images/soldier_animated.gif "Predigame Soldiers")
+
 ![alt text](http://predicate.us/predigame/images/other_animated.gif "Predigame Actors")
 
 
