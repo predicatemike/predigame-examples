@@ -6,7 +6,7 @@ A Predigame level consists of three key ingredients:
 
 1. a `setup()` member containing any code that should run prior to the start of a given level.
 2. a `completed()` member that assesses if a given objective has been established.
-3. a `next()` member that instructs Predigame the next level to load.
+3. a `next()` member that instructs Predigame on the next level to load.
 
 With that in mind, let's take a look at two mini-game examples.
 
