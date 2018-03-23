@@ -11,7 +11,7 @@ current_level = None
 def timer():
     text("You survived " + str(current_level.get_duration()) + " seconds.")
     gameover()
- 
+
 def pop(s):
     s.destroy()
     current_level.hit()
@@ -24,7 +24,10 @@ class PopLevel(Level):
         self.duration = duration
 
     def hit(self):
+        # update the number of hits
         self.hits += 1
+
+        # refresh the score
         score(self.hits)
 
     def get_duration(self):
