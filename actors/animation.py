@@ -2,7 +2,7 @@
 import sys
 name = None
 if len(sys.argv) != 3:
-    sys.exit('usage: pigm animation.py <actor_name>')
+    sys.exit('usage: pred animation.py <actor_name>')
 else:
     name = sys.argv[2]
 

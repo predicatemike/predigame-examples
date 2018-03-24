@@ -28,10 +28,10 @@ And when those frames are rotated fast enough the actor (in this case the zombie
 Now let's explore some animations. We provided a simple animation utility that enumerates through all possible animations for a given actor (just hit the space bar). Here's a few examples for running this utility:
 
 ```
-my_machine$ pigm animation.py Bee
-my_machine$ pigm animation.py Skeleton
-my_machine$ pigm animation.py Soldier-1
-my_machine$ pigm animation.py Viking
-my_machine$ pigm animation.py Witch
-my_machine$ pigm animation.py Zombie-1
+my_machine$ pred animation.py Bee
+my_machine$ pred animation.py Skeleton
+my_machine$ pred animation.py Soldier-1
+my_machine$ pred animation.py Viking
+my_machine$ pred animation.py Witch
+my_machine$ pred animation.py Zombie-1
 ```

@@ -59,7 +59,7 @@ callback(launch, 1)
 Now let's give it a test run!
 
 ```
-my_machine$ pigm fireworks.py
+my_machine$ pred fireworks.py
 ```
 
 You'll notice that fireworks launch and sound effects are playing, but there is *no explosion*! That's due to this line:
@@ -118,5 +118,5 @@ callback(launch, 1)
 
 Save your changes and enjoy the show!
 ```
-my_machine$ pigm fireworks.py
+my_machine$ pred fireworks.py
 ```

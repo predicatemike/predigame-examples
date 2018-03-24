@@ -269,7 +269,7 @@ keydown('r', reset)
 
 Save this code as `thirsty.py` and let's give it a run!
 
-    my_machine$ pigm zombie.py
+    my_machine$ pred zombie.py
 
 If it loads correctly, the following game canvas should display. Have fun!!
 

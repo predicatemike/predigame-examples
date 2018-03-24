@@ -17,7 +17,7 @@ score(color=WHITE)
 You can try running your game now and you'll notice the scoring box. Without any options, the *default* scoring box is a simple numeric score counter.
 
 ```
-my_machine$ pigm score.py
+my_machine$ pred score.py
 ```
 # Value
 The next score box is a numeric value holder. Unlike the previous example, this score box will not count the score, but rather display a value.

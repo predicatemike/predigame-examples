@@ -20,7 +20,7 @@ background()
 Now let's give it a test run!
 
 ```
-my_machine$ pigm frame.py
+my_machine$ pred frame.py
 ```
 You'll notice that the game is loaded in full screen, but the picture is static. To fix this up, let's add a timer callback.
 
@@ -42,7 +42,7 @@ callback(background, 10, repeat=FOREVER)
 
 Save your changes and enjoy the pics!
 ```
-my_machine$ pigm frame.py
+my_machine$ pred frame.py
 ```
 
 # CHALLENGE - Add the time!

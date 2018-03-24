@@ -14,9 +14,9 @@ WIDTH = 30
 HEIGHT = 20
 TITLE = 'MAZE'
 ```
-Save your changes. Let's call the file `maze.py`.  Try running the game from the terminal using the `pigm` command (you'll want to run this command from the directory where you saved the file).
+Save your changes. Let's call the file `maze.py`.  Try running the game from the terminal using the `pred` command (you'll want to run this command from the directory where you saved the file).
 
-    my_machine$ pigm maze.py
+    my_machine$ pred maze.py
 
 This program doesn't do much just yet. Just an empty window titled "MAZE" - that's missing the maze! Let's add that now.
 
@@ -123,7 +123,7 @@ keydown('r', reset)
 ```
 Save the changes and try running the code:
 
-    my_machine$ pigm maze.py
+    my_machine$ pred maze.py
 
 Notice that player sprite can walk through walls? That's a bit silly. We'll fix that in a few minutes. Can't reach the destination? Try hitting `r` to reset the game.
 
@@ -142,7 +142,7 @@ p.collides(sprites(), lose)
 ```
 Save the changes and try running the code:
 
-    my_machine$ pigm maze.py
+    my_machine$ pred maze.py
 
 ## Wall Avoidance
 In a real game, we don't want the player sprite to walk into walls. It's possible to check the destination of where the player is about to move prior to making the move. We'll call this a *precondition* - Predigame handles this as a callback function.
@@ -241,7 +241,7 @@ Random mazes can be a little challenging to work with since we don't have any co
 
 To help illustrate mazes, the Predigame platform includes a maze editor example that can be used to create, preview, and delete mazes. Try running the code and create some mazes.
 
-    my_machine$ pigm maze-editor.py
+    my_machine$ pred maze-editor.py
 
 The code includes some debugging information on start up that documents how to use the maze  editor.
 

@@ -13,9 +13,9 @@ WIDTH = 30
 HEIGHT = 20
 TITLE = 'Sprites Demo'
 ```
-Save your changes. Let's call the file `sprite-demo.py`.  Try running the game from the terminal using the `pigm` command (you'll want to run this command from the directory where you saved the file).
+Save your changes. Let's call the file `sprite-demo.py`.  Try running the game from the terminal using the `pred` command (you'll want to run this command from the directory where you saved the file).
 
-    my_machine$ pigm sprite-demo.py
+    my_machine$ pred sprite-demo.py
 
 This program doesn't do much just yet. Just an empty window titled "Sprites Demo". So boring. We're going to add some more code, but first let's make sure we understand grid coordinates and how to place sprites within those coordinates.
 
@@ -33,7 +33,7 @@ grid()
 ```
 Save your code and try running the this version using the same command:
 
-    my_machine$ pigm sprite-demo.py
+    my_machine$ pred sprite-demo.py
 
 The result should look like the figure below. Counting the grid coordinates will show **30** from *left to right* and **20** from *top to bottom*. This doesn't address how to address sprites using grid coordinates, we'll cover that next.
 
